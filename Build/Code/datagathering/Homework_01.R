@@ -29,7 +29,7 @@ covid.IL <- covid %>%
          Date=as.Date(date,"%Y-%m-%d"))
 
 # output
-covid.IL
+head(covid.IL)
 
 # plot percentage change of new cases
 plot(covid.IL$Date, covid.IL$new_pc_case, 

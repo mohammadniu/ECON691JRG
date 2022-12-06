@@ -34,7 +34,7 @@ head(election_20)
 # ##...........PART 2..........## #
 
 # working with Census data
-census_api_key("928a068a048af13c091f2f4bf9a5c49c31950fbc", install = TRUE)
+#census_api_key("928a068a048af13c091f2f4bf9a5c49c31950fbc", install = TRUE)
 
 var <- c("B01001_001","B01001_002","B02001_002","B02001_003","B01002_002","B01002_003")
 
@@ -47,6 +47,8 @@ acs1 <- get_acs(geography = "county",
 
 # cleaning census data
 census1 <- acs1 %>%
+  select(!moe) %>% # You need to do this first because otherwise you end up with the large matrix of NAs you see
+                    #in your code because each GOID - moe makes a "unique" pair for each variable
   pivot_wider(names_from = "variable", values_from = "estimate") %>% 
   rename("total_pop"="B01001_001",
          "male"="B01001_002",
@@ -61,7 +63,7 @@ census1 <- acs1 %>%
 
 # part-2 final output
 census_20 <- census1 %>% 
-  select(-c("NAME", "moe", "male", "white", "black"))
+  select(-c("NAME",  "male", "white", "black"))  #"moe", Removed
 
 head(census_20)
 

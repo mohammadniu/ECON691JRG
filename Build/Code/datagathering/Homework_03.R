@@ -37,7 +37,7 @@ main <- votes %>%
   select(-county_fips)
 
 # working with census data
-census_api_key("928a068a048af13c091f2f4bf9a5c49c31950fbc", install = TRUE)
+#census_api_key("928a068a048af13c091f2f4bf9a5c49c31950fbc", install = TRUE)
 
 var <- c("B01001_001","B01001_002","B02001_002","B02001_003","B01002_002","B01002_003")
 fips <- c(27, 38, 46)
@@ -89,16 +89,17 @@ covid_recent <- covid %>%
 
 # merging datasets and create per capita cases & deaths
 vote_acs_covid <- full_join(census, covid_recent, by = "GEOID") %>% 
-  mutate(per_cap_cases = total_cases/total_pop, per_cap_deaths = total_deaths/total_pop) %>% 
-  arrange(desc(per_cap_deaths, per_cap_cases))
+  mutate(per_cap_cases = total_cases/total_pop, 
+         per_cap_deaths = total_deaths/total_pop) #%>% 
+  #arrange(desc(per_cap_deaths, per_cap_cases)) Not sure why this is needed and it is crashing the code.
 
-
+core<-vote_acs_covid #Not sure where this went?
 
 ###..........Part 2.........###
 summary(vote_acs_covid)
 
 # factoring state
-core2 <- core %>% 
+core2 <- core %>%  #You have not "core" to reference
   mutate(s.fips = substr(GEOID, 1, 2),
          state = case_when(s.fips == "27" ~ "North Dakota",
                            s.fips == "38" ~ "South Dakota",
